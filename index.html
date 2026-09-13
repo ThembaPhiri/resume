@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Themba Phiri — IT Service Desk & Systems Support</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0b0e;
+    --bg-2: #0e1015;
+    --glass: rgba(255,255,255,0.035);
+    --glass-hover: rgba(255,255,255,0.06);
+    --border: rgba(255,255,255,0.09);
+    --border-strong: rgba(212,175,90,0.5);
+    --ink: #f2f0ea;
+    --muted: #979aa3;
+    --gold: #d4af5a;
+    --gold-dim: rgba(212,175,90,0.14);
+    --teal: #5fcbb8;
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  .display { font-family: 'Fraunces', serif; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  a { color: inherit; }
+
+  .wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 32px;
+    position: relative;
+  }
+
+  /* ambient background */
+  .ambient {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 700px 500px at 85% -5%, rgba(212,175,90,0.10) 0%, transparent 60%),
+      radial-gradient(ellipse 600px 500px at 5% 35%, rgba(95,203,184,0.06) 0%, transparent 60%),
+      linear-gradient(180deg, #0a0b0e 0%, #0c0d11 100%);
+  }
+
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  header, main, footer { position: relative; z-index: 2; }
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: rgba(10, 11, 14, 0.7);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 0;
+  }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 19px;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+  }
+
+  .logo .dot { color: var(--gold); }
+
+  .navlinks {
+    display: flex;
+    gap: 34px;
+    font-size: 14px;
+    align-items: center;
+  }
+
+  .navlinks a {
+    text-decoration: none;
+    color: var(--muted);
+    transition: color 0.2s ease;
+  }
+
+  .navlinks a:hover, .navlinks a:focus-visible { color: var(--ink); }
+
+  .navlinks a.cta {
+    color: var(--bg);
+    background: var(--gold);
+    padding: 9px 20px;
+    border-radius: 100px;
+    font-weight: 600;
+  }
+
+  .navlinks a.cta:hover { opacity: 0.88; }
+
+  /* HERO */
+  .hero {
+    padding: 130px 0 100px;
+    position: relative;
+  }
+
+  .hero-network {
+    position: absolute;
+    top: -20px;
+    right: -60px;
+    width: 460px;
+    height: 460px;
+    opacity: 0.9;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  @media (max-width: 900px) { .hero-network { display: none; } }
+
+  .hero-content { position: relative; z-index: 1; max-width: 640px; }
+
+  .hero-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.02em;
+    color: var(--gold);
+    margin: 0 0 30px;
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    background: var(--glass);
+  }
+
+  .hero-kicker .pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--teal);
+    box-shadow: 0 0 0 3px rgba(95,203,184,0.2);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(38px, 5.6vw, 60px);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    margin: 0 0 26px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  .hero p {
+    font-size: 18px;
+    color: var(--muted);
+    margin: 0 0 38px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 26px;
+    border-radius: 100px;
+    font-size: 14.5px;
+    text-decoration: none;
+    font-weight: 600;
+    border: 1px solid transparent;
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: #16130a;
+  }
+
+  .btn-primary:hover { transform: translateY(-2px); }
+
+  .btn-secondary {
+    border-color: var(--border);
+    color: var(--ink);
+    background: var(--glass);
+  }
+
+  .btn-secondary:hover { border-color: var(--gold); }
+
+  .hero-stats {
+    display: flex;
+    gap: 44px;
+    margin-top: 56px;
+    padding-top: 36px;
+    border-top: 1px solid var(--border);
+  }
+
+  .stat-num {
+    font-family: 'Fraunces', serif;
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--gold);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* SECTIONS */
+  section { padding: 96px 0; }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 48px;
+    gap: 20px;
+  }
+
+  .section-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .section-head h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  .section-head .count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 52px;
+  }
+
+  .about-text p {
+    color: var(--muted);
+    font-size: 16.5px;
+    margin: 0 0 18px;
+  }
+
+  .about-text p:last-child { margin-bottom: 0; }
+
+  .stack-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    align-content: flex-start;
+  }
+
+  .stack-list li {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    padding: 9px 13px;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    color: var(--ink);
+    border-radius: 8px;
+    transition: border-color 0.2s ease;
+  }
+
+  .stack-list li:hover { border-color: var(--gold); }
+
+  /* EXPERIENCE - timeline */
+  .timeline { position: relative; }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 160px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(180deg, var(--gold) 0%, var(--border) 40%, var(--border) 100%);
+  }
+
+  @media (max-width: 640px) { .timeline::before { display: none; } }
+
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 32px;
+    padding: 32px 0;
+    position: relative;
+  }
+
+  .timeline-item:first-child { padding-top: 0; }
+
+  .timeline-item::after {
+    content: '';
+    position: absolute;
+    left: 156px;
+    top: 36px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px var(--border);
+  }
+
+  @media (max-width: 640px) { .timeline-item::after { display: none; } }
+
+  .timeline-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: var(--gold);
+    padding-top: 3px;
+  }
+
+  .timeline-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px 28px;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .timeline-card:hover { border-color: var(--border-strong); background: var(--glass-hover); }
+
+  .timeline-role {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    font-weight: 600;
+    margin: 0 0 3px;
+  }
+
+  .timeline-org {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 0 0 16px;
+  }
+
+  .timeline-card ul {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--muted);
+    font-size: 14.5px;
+  }
+
+  .timeline-card li { margin-bottom: 8px; }
+  .timeline-card li:last-child { margin-bottom: 0; }
+  .timeline-card li::marker { color: var(--gold); }
+
+  /* CERTS - bento */
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+
+  .cert-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px;
+    transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+  }
+
+  .cert-card:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-4px);
+    background: var(--glass-hover);
+  }
+
+  .cert-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    background: var(--gold-dim);
+    padding: 5px 10px;
+    border-radius: 6px;
+    display: inline-block;
+    margin-bottom: 14px;
+  }
+
+  .cert-name {
+    font-family: 'Fraunces', serif;
+    font-size: 16.5px;
+    font-weight: 600;
+    margin: 0 0 9px;
+  }
+
+  .cert-desc {
+    color: var(--muted);
+    font-size: 13.5px;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .skill-group {
+    background: var(--bg-2);
+    padding: 30px 32px;
+  }
+
+  .skill-group h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    color: var(--gold);
+    margin: 0 0 12px;
+    font-weight: 600;
+  }
+
+  .skill-group p {
+    color: var(--muted);
+    font-size: 14.5px;
+    margin: 0;
+    line-height: 1.75;
+  }
+
+  @media (max-width: 640px) { .skills-grid { grid-template-columns: 1fr; } }
+
+  /* CONTACT */
+  .contact-panel {
+    background: linear-gradient(160deg, var(--glass) 0%, var(--bg-2) 100%);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 64px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-panel::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 300px;
+    background: radial-gradient(ellipse, rgba(212,175,90,0.14) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .contact-panel > * { position: relative; z-index: 1; }
+
+  .contact-panel span.section-eyebrow { justify-content: center; display: block; }
+
+  .contact-panel h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    font-weight: 600;
+    margin: 0 0 14px;
+    letter-spacing: -0.01em;
+  }
+
+  .contact-panel p {
+    color: var(--muted);
+    margin: 0 0 32px;
+    font-size: 16px;
+  }
+
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  footer {
+    padding: 44px 0 60px;
+    color: var(--muted);
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+
+  @media (max-width: 640px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .cert-grid { grid-template-columns: 1fr; }
+    .timeline-item { grid-template-columns: 1fr; gap: 10px; }
+    .navlinks { gap: 18px; font-size: 13px; }
+    .navlinks a.cta { display: none; }
+    .hero { padding: 84px 0 60px; }
+    .hero-stats { flex-wrap: wrap; gap: 28px; }
+    .contact-panel { padding: 40px 24px; }
+  }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+
+<div class="ambient"></div>
+<div class="grain"></div>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <a href="#" class="logo">themba<span class="dot">.</span>phiri</a>
+      <div class="navlinks">
+        <a href="#experience">Experience</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact" class="cta">Contact</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <svg class="hero-network" viewBox="0 0 460 460" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <radialGradient id="nodeglow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#d4af5a" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#d4af5a" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <g stroke="rgba(212,175,90,0.35)" stroke-width="1" fill="none">
+        <line x1="230" y1="230" x2="80" y2="90"/>
+        <line x1="230" y1="230" x2="380" y2="70"/>
+        <line x1="230" y1="230" x2="60" y2="260"/>
+        <line x1="230" y1="230" x2="400" y2="240"/>
+        <line x1="230" y1="230" x2="150" y2="400"/>
+        <line x1="230" y1="230" x2="330" y2="390"/>
+        <line x1="80" y1="90" x2="150" y2="180" stroke="rgba(95,203,184,0.25)"/>
+        <line x1="380" y1="70" x2="400" y2="240" stroke="rgba(95,203,184,0.25)"/>
+        <line x1="60" y1="260" x2="150" y2="400" stroke="rgba(95,203,184,0.25)"/>
+      </g>
+      <circle cx="230" cy="230" r="26" fill="url(#nodeglow)"/>
+      <circle cx="230" cy="230" r="6" fill="#d4af5a"/>
+      <g fill="#f2f0ea">
+        <circle cx="80" cy="90" r="4"/>
+        <circle cx="380" cy="70" r="4"/>
+        <circle cx="60" cy="260" r="4"/>
+        <circle cx="400" cy="240" r="4"/>
+        <circle cx="150" cy="400" r="4"/>
+        <circle cx="330" cy="390" r="4"/>
+        <circle cx="150" cy="180" r="3" fill="#5fcbb8"/>
+        <circle cx="400" cy="240" r="3" fill="#5fcbb8"/>
+      </g>
+    </svg>
+
+    <div class="hero-content">
+      <div class="hero-kicker"><span class="pulse"></span>OPEN TO NEW OPPORTUNITIES</div>
+      <h1 class="display">IT support that keeps <em>a national network</em> running.</h1>
+      <p>I'm Themba Phiri, an IT Service Desk professional based in Johannesburg with 3 years' experience as a first-line escalation point for a national user base — resolving 25+ tickets daily across Microsoft 365, Active Directory, and networked infrastructure while hitting SLA targets in high-pressure, multi-site environments.</p>
+      <div class="hero-actions">
+        <a href="#experience" class="btn btn-primary">See my experience</a>
+        <a href="mailto:p.themba3468@gmail.com" class="btn btn-secondary">Get in touch</a>
+      </div>
+
+      <div class="hero-stats">
+        <div>
+          <span class="stat-num">3+</span>
+          <span class="stat-label">Years in IT support</span>
+        </div>
+        <div>
+          <span class="stat-num">25+</span>
+          <span class="stat-label">Tickets resolved daily</span>
+        </div>
+        <div>
+          <span class="stat-num">Top 3</span>
+          <span class="stat-label">Monthly performer</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="wrap reveal">
+    <div class="section-head">
+      <div>
+        <span class="section-eyebrow">PROFILE</span>
+        <h2 class="display">About</h2>
+      </div>
+    </div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I've spent the last three years as the sole first-line escalation point during shift hours for Lancet Laboratories' national user base, owning escalated tickets end-to-end across Microsoft 365, Azure Fundamentals, and networked infrastructure (DNS, DHCP, VPNs, 3CX).</p>
+        <p>I hold Microsoft Azure Fundamentals (AZ-900) and dual Fortinet Cybersecurity certifications, with MD-102: Microsoft 365 Endpoint Administrator in progress. I'm currently based in Johannesburg and open to relocating for the right role.</p>
+      </div>
+      <ul class="stack-list">
+        <li>Microsoft 365</li>
+        <li>Active Directory</li>
+        <li>Azure (AZ-900)</li>
+        <li>Networking</li>
+        <li>Cybersecurity</li>
+        <li>Python</li>
+        <li>C#</li>
+        <li>SQL</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="experience" class="wrap reveal">
+    <div class="section-head">
+      <div>
+        <span class="section-eyebrow">CAREER</span>
+        <h2 class="display">Experience</h2>
+      </div>
+      <span class="count mono">Lancet Laboratories</span>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-date">Aug 2024 – Present</div>
+        <div class="timeline-card">
+          <p class="timeline-role">IT Service Desk Agent — Level 2 (24/7 Shift Support)</p>
+          <p class="timeline-org">Lancet Laboratories, Johannesburg</p>
+          <ul>
+            <li>Sole first-line escalation point nationally during shift hours, supporting all users across South Africa with complex infrastructure, network, and Microsoft-related incidents.</li>
+            <li>Resolve 25+ tickets daily, with 70% being escalations from Level 1 technicians.</li>
+            <li>Manage 5+ Active Directory changes daily, including user accounts, access rights, and permissions.</li>
+            <li>Consistently ranked in the top 3 performers on monthly service desk statistics for ticket throughput and resolution quality.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">Dec 2023 – Jul 2024</div>
+        <div class="timeline-card">
+          <p class="timeline-role">IT Service Desk Agent — Level 1</p>
+          <p class="timeline-org">Lancet Laboratories, Johannesburg</p>
+          <ul>
+            <li>Logged, tracked, and resolved technical incidents using Hornbill ITSM and Kaseya Autotask.</li>
+            <li>Administered the Microsoft 365 suite (Exchange, SharePoint, Teams, OneDrive, Outlook) for end-user support.</li>
+            <li>Managed user account lifecycle, password resets, and access provisioning in Active Directory.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">Apr 2023 – Nov 2023</div>
+        <div class="timeline-card">
+          <p class="timeline-role">IT Intern</p>
+          <p class="timeline-org">Lancet Laboratories, Johannesburg</p>
+          <ul>
+            <li>Assisted senior IT staff with daily support tasks, infrastructure projects, and system maintenance in an enterprise, multi-site environment.</li>
+            <li>Gained hands-on exposure to ticketing processes, systems installation support, and cross-team problem resolution.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="certs" class="wrap reveal">
+    <div class="section-head">
+      <div>
+        <span class="section-eyebrow">CREDENTIALS</span>
+        <h2 class="display">Certifications & education</h2>
+      </div>
+    </div>
+    <div class="cert-grid">
+      <div class="cert-card">
+        <span class="cert-tag">MICROSOFT</span>
+        <p class="cert-name">Azure Fundamentals (AZ-900)</p>
+        <p class="cert-desc">Foundational certification covering core cloud concepts, Azure services, security, and pricing.</p>
+      </div>
+      <div class="cert-card">
+        <span class="cert-tag">FORTINET</span>
+        <p class="cert-name">Cybersecurity Fundamentals (FCF)</p>
+        <p class="cert-desc">Entry-level certification covering foundational cybersecurity concepts, threats, and Fortinet solutions.</p>
+      </div>
+      <div class="cert-card">
+        <span class="cert-tag">FORTINET</span>
+        <p class="cert-name">Cybersecurity Associate (FCA)</p>
+        <p class="cert-desc">Associate-level certification covering core cybersecurity concepts and Fortinet's Security Fabric.</p>
+      </div>
+      <div class="cert-card">
+        <span class="cert-tag">IN PROGRESS</span>
+        <p class="cert-name">MD-102: M365 Endpoint Administrator</p>
+        <p class="cert-desc">Microsoft certification in progress, covering endpoint management and deployment.</p>
+      </div>
+      <div class="cert-card">
+        <span class="cert-tag">2020–2022</span>
+        <p class="cert-name">Diploma in ICT — Durban University of Technology</p>
+        <p class="cert-desc">Average 73%. Information Systems, Applications Development, Project Management, Cisco Networking & Cybersecurity Fundamentals, Mobile Computing.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills" class="wrap reveal">
+    <div class="section-head">
+      <div>
+        <span class="section-eyebrow">CAPABILITIES</span>
+        <h2 class="display">Technical skills</h2>
+      </div>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <h3>Microsoft & Cloud</h3>
+        <p>Microsoft 365 (Exchange Online, SharePoint, Teams, OneDrive, Outlook, MFA), Azure & Entra ID, Intune (MD-102 in progress), Active Directory</p>
+      </div>
+      <div class="skill-group">
+        <h3>Networking & Infrastructure</h3>
+        <p>DNS, DHCP, VPN, LAN/WLAN/WAN, TCP/IP, inter-office/multi-site connectivity, hardware & software deployment</p>
+      </div>
+      <div class="skill-group">
+        <h3>Security & Support</h3>
+        <p>Security patching, cybersecurity awareness, backup verification & disaster recovery, remote support (UltraVNC, TeamViewer)</p>
+      </div>
+      <div class="skill-group">
+        <h3>Programming & Tools</h3>
+        <p>Python, C#, HTML, CSS, JavaScript, SQL, Hornbill ITSM, Kaseya Autotask, asset & inventory tracking</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="wrap reveal">
+    <div class="contact-panel">
+      <span class="section-eyebrow">GET IN TOUCH</span>
+      <h2 class="display">Let's talk.</h2>
+      <p>Open to IT support, systems administration, and cloud/security-focused roles — willing to relocate.</p>
+      <div class="contact-links">
+        <a href="mailto:p.themba3468@gmail.com" class="btn btn-primary">Email me</a>
+        <a href="tel:+27780661826" class="btn btn-secondary">Call</a>
+        <a href="https://linkedin.com/in/themba-phiri-aa64081a4" target="_blank" rel="noopener" class="btn btn-secondary">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">Johannesburg, Gauteng · References available on request</footer>
+
+<script>
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  } else {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
+  }
+</script>
+
+</body>
+</html>
