@@ -4,6 +4,64 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Themba Phiri — IT Service Desk & Systems Support</title>
+<meta name="description" content="Themba Phiri is an IT Service Desk professional in Johannesburg with 3+ years supporting a national user base across Microsoft 365, Active Directory, networking, and cybersecurity. Azure (AZ-900) and Fortinet certified.">
+<meta name="author" content="Themba Phiri">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://thembaphiri.github.io/themba-phiri/">
+
+<!-- Favicon -->
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="assets/favicon-512.png">
+<link rel="apple-touch-icon" href="assets/favicon-512.png">
+<meta name="theme-color" content="#0a0b0e">
+
+<!-- Open Graph / Facebook / LinkedIn -->
+<meta property="og:type" content="profile">
+<meta property="og:url" content="https://thembaphiri.github.io/themba-phiri/">
+<meta property="og:title" content="Themba Phiri — IT Service Desk & Systems Support">
+<meta property="og:description" content="IT Service Desk professional in Johannesburg with 3+ years supporting a national user base across Microsoft 365, Active Directory, networking, and cybersecurity.">
+<meta property="og:image" content="https://thembaphiri.github.io/themba-phiri/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="profile:first_name" content="Themba">
+<meta property="profile:last_name" content="Phiri">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Themba Phiri — IT Service Desk & Systems Support">
+<meta name="twitter:description" content="IT Service Desk professional in Johannesburg with 3+ years supporting a national user base across Microsoft 365, Active Directory, networking, and cybersecurity.">
+<meta name="twitter:image" content="https://thembaphiri.github.io/themba-phiri/assets/og-image.png">
+
+<!-- Structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Themba Phiri",
+  "jobTitle": "IT Service Desk Agent",
+  "url": "https://thembaphiri.github.io/themba-phiri/",
+  "email": "mailto:p.themba3468@gmail.com",
+  "telephone": "+27780661826",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Johannesburg",
+    "addressRegion": "Gauteng",
+    "addressCountry": "ZA"
+  },
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Lancet Laboratories"
+  },
+  "alumniOf": {
+    "@type": "CollegeOrUniversity",
+    "name": "Durban University of Technology"
+  },
+  "sameAs": [
+    "https://linkedin.com/in/themba-phiri-aa64081a4"
+  ]
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -78,6 +136,23 @@
     background: rgba(10, 11, 14, 0.7);
     backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border);
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+
+  header.scrolled {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+    border-bottom-color: rgba(212,175,90,0.25);
+  }
+
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--gold), var(--teal));
+    z-index: 40;
+    transition: width 0.1s ease-out;
   }
 
   nav {
@@ -108,8 +183,27 @@
     text-decoration: none;
     color: var(--muted);
     transition: color 0.2s ease;
+    position: relative;
   }
 
+  .navlinks a:not(.cta)::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 100%;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+  }
+
+  .navlinks a:not(.cta):hover::after,
+  .navlinks a:not(.cta):focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
   .navlinks a:hover, .navlinks a:focus-visible { color: var(--ink); }
 
   .navlinks a.cta {
@@ -140,6 +234,43 @@
   }
 
   @media (max-width: 900px) { .hero-network { display: none; } }
+
+  .network-rotate {
+    transform-origin: 230px 230px;
+    animation: networkRotate 40s linear infinite;
+  }
+
+  @keyframes networkRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .network-glow {
+    animation: networkGlow 3.6s ease-in-out infinite;
+    transform-origin: 230px 230px;
+  }
+
+  @keyframes networkGlow {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.25); }
+  }
+
+  .node-twinkle {
+    animation: nodeTwinkle 3s ease-in-out infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  @keyframes nodeTwinkle {
+    0%, 100% { opacity: 0.45; transform: scale(0.85); }
+    50% { opacity: 1; transform: scale(1.3); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .network-rotate { animation: none; }
+    .network-glow { animation: none; }
+    .node-twinkle { animation: none; }
+  }
 
   .hero-content { position: relative; z-index: 1; max-width: 640px; }
 
@@ -249,6 +380,30 @@
     margin-top: 4px;
   }
 
+  @keyframes heroRise {
+    from { opacity: 0; transform: translateY(22px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-kicker, .hero h1, .hero p, .hero-actions, .hero-stats, .hero-network {
+    opacity: 0;
+    animation: heroRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .hero-kicker { animation-delay: 0.05s; }
+  .hero h1 { animation-delay: 0.18s; }
+  .hero p { animation-delay: 0.32s; }
+  .hero-actions { animation-delay: 0.46s; }
+  .hero-stats { animation-delay: 0.6s; }
+  .hero-network { animation-delay: 0.3s; animation-duration: 1.2s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-kicker, .hero h1, .hero p, .hero-actions, .hero-stats, .hero-network {
+      opacity: 1;
+      animation: none;
+    }
+  }
+
   /* SECTIONS */
   section { padding: 96px 0; }
 
@@ -263,8 +418,39 @@
     transform: translateY(0);
   }
 
+  .timeline-item, .cert-card, .skill-group {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .reveal.in-view .timeline-item,
+  .reveal.in-view .cert-card,
+  .reveal.in-view .skill-group {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal.in-view .timeline-item:nth-child(1) { transition-delay: 0.05s; }
+  .reveal.in-view .timeline-item:nth-child(2) { transition-delay: 0.16s; }
+  .reveal.in-view .timeline-item:nth-child(3) { transition-delay: 0.27s; }
+  .reveal.in-view .timeline-item:nth-child(4) { transition-delay: 0.38s; }
+
+  .reveal.in-view .cert-card:nth-child(1) { transition-delay: 0.03s; }
+  .reveal.in-view .cert-card:nth-child(2) { transition-delay: 0.1s; }
+  .reveal.in-view .cert-card:nth-child(3) { transition-delay: 0.17s; }
+  .reveal.in-view .cert-card:nth-child(4) { transition-delay: 0.24s; }
+  .reveal.in-view .cert-card:nth-child(5) { transition-delay: 0.31s; }
+
+  .reveal.in-view .skill-group:nth-child(1) { transition-delay: 0.03s; }
+  .reveal.in-view .skill-group:nth-child(2) { transition-delay: 0.11s; }
+  .reveal.in-view .skill-group:nth-child(3) { transition-delay: 0.19s; }
+  .reveal.in-view .skill-group:nth-child(4) { transition-delay: 0.27s; }
+
   @media (prefers-reduced-motion: reduce) {
-    .reveal { opacity: 1; transform: none; transition: none; }
+    .reveal, .timeline-item, .cert-card, .skill-group {
+      opacity: 1; transform: none; transition: none;
+    }
   }
 
   .section-head {
@@ -573,11 +759,12 @@
 
 <div class="ambient"></div>
 <div class="grain"></div>
+<div class="scroll-progress" id="scrollProgress"></div>
 
 <header>
   <div class="wrap">
     <nav>
-      <a href="#" class="logo">themba<span class="dot">.</span>phiri</a>
+      <a href="#" class="logo">Themba<span class="dot">.</span>Phiri</a>
       <div class="navlinks">
         <a href="#experience">Experience</a>
         <a href="#skills">Skills</a>
@@ -596,28 +783,30 @@
           <stop offset="100%" stop-color="#d4af5a" stop-opacity="0"/>
         </radialGradient>
       </defs>
-      <g stroke="rgba(212,175,90,0.35)" stroke-width="1" fill="none">
-        <line x1="230" y1="230" x2="80" y2="90"/>
-        <line x1="230" y1="230" x2="380" y2="70"/>
-        <line x1="230" y1="230" x2="60" y2="260"/>
-        <line x1="230" y1="230" x2="400" y2="240"/>
-        <line x1="230" y1="230" x2="150" y2="400"/>
-        <line x1="230" y1="230" x2="330" y2="390"/>
-        <line x1="80" y1="90" x2="150" y2="180" stroke="rgba(95,203,184,0.25)"/>
-        <line x1="380" y1="70" x2="400" y2="240" stroke="rgba(95,203,184,0.25)"/>
-        <line x1="60" y1="260" x2="150" y2="400" stroke="rgba(95,203,184,0.25)"/>
-      </g>
-      <circle cx="230" cy="230" r="26" fill="url(#nodeglow)"/>
-      <circle cx="230" cy="230" r="6" fill="#d4af5a"/>
-      <g fill="#f2f0ea">
-        <circle cx="80" cy="90" r="4"/>
-        <circle cx="380" cy="70" r="4"/>
-        <circle cx="60" cy="260" r="4"/>
-        <circle cx="400" cy="240" r="4"/>
-        <circle cx="150" cy="400" r="4"/>
-        <circle cx="330" cy="390" r="4"/>
-        <circle cx="150" cy="180" r="3" fill="#5fcbb8"/>
-        <circle cx="400" cy="240" r="3" fill="#5fcbb8"/>
+      <g class="network-rotate">
+        <g stroke="rgba(212,175,90,0.35)" stroke-width="1" fill="none">
+          <line x1="230" y1="230" x2="80" y2="90"/>
+          <line x1="230" y1="230" x2="380" y2="70"/>
+          <line x1="230" y1="230" x2="60" y2="260"/>
+          <line x1="230" y1="230" x2="400" y2="240"/>
+          <line x1="230" y1="230" x2="150" y2="400"/>
+          <line x1="230" y1="230" x2="330" y2="390"/>
+          <line x1="80" y1="90" x2="150" y2="180" stroke="rgba(95,203,184,0.25)"/>
+          <line x1="380" y1="70" x2="400" y2="240" stroke="rgba(95,203,184,0.25)"/>
+          <line x1="60" y1="260" x2="150" y2="400" stroke="rgba(95,203,184,0.25)"/>
+        </g>
+        <circle class="network-glow" cx="230" cy="230" r="26" fill="url(#nodeglow)"/>
+        <circle cx="230" cy="230" r="6" fill="#d4af5a"/>
+        <g fill="#f2f0ea">
+          <circle class="node-twinkle" style="animation-delay:0s" cx="80" cy="90" r="4"/>
+          <circle class="node-twinkle" style="animation-delay:0.6s" cx="380" cy="70" r="4"/>
+          <circle class="node-twinkle" style="animation-delay:1.2s" cx="60" cy="260" r="4"/>
+          <circle class="node-twinkle" style="animation-delay:1.8s" cx="400" cy="240" r="4"/>
+          <circle class="node-twinkle" style="animation-delay:0.3s" cx="150" cy="400" r="4"/>
+          <circle class="node-twinkle" style="animation-delay:0.9s" cx="330" cy="390" r="4"/>
+          <circle class="node-twinkle" style="animation-delay:1.5s" cx="150" cy="180" r="3" fill="#5fcbb8"/>
+          <circle class="node-twinkle" style="animation-delay:2.1s" cx="400" cy="240" r="3" fill="#5fcbb8"/>
+        </g>
       </g>
     </svg>
 
@@ -656,7 +845,7 @@
     </div>
     <div class="about-grid">
       <div class="about-text">
-        <p>I've spent the last three years as the sole first-line escalation point during shift hours for Lancet Laboratories' national user base, owning escalated tickets end-to-end across Microsoft 365, Azure Fundamentals, and networked infrastructure (DNS, DHCP, VPNs, 3CX).</p>
+        <p>I've spent the last three years as the sole first-line escalation point during shift hours for Lancet Laboratories' national user base, owning escalated tickets end-to-end across Microsoft 365, Azure Fundamentals, and networked infrastructure (DNS, DHCP, VPNs, 3CX). Day to day, I liaise across Development, Consultants, Data, On-site Technical, and external service provider teams to keep internal systems running at their optimal best and reduce downtime.</p>
         <p>I hold Microsoft Azure Fundamentals (AZ-900) and dual Fortinet Cybersecurity certifications, with MD-102: Microsoft 365 Endpoint Administrator in progress. I'm currently based in Johannesburg and open to relocating for the right role.</p>
       </div>
       <ul class="stack-list">
@@ -689,6 +878,7 @@
           <p class="timeline-org">Lancet Laboratories, Johannesburg</p>
           <ul>
             <li>Sole first-line escalation point nationally during shift hours, supporting all users across South Africa with complex infrastructure, network, and Microsoft-related incidents.</li>
+            <li>Liaise across Development, Consultants, Data, On-site Technical, and relevant service provider teams to keep all Lancet internal systems running at optimal performance and reduce downtime.</li>
             <li>Resolve 25+ tickets daily, with 70% being escalations from Level 1 technicians.</li>
             <li>Manage 5+ Active Directory changes daily, including user accounts, access rights, and permissions.</li>
             <li>Consistently ranked in the top 3 performers on monthly service desk statistics for ticket throughput and resolution quality.</li>
@@ -816,6 +1006,21 @@
   } else {
     document.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
   }
+
+  const header = document.querySelector('header');
+  const progressBar = document.getElementById('scrollProgress');
+
+  function onScroll() {
+    const scrollTop = window.scrollY;
+    header.classList.toggle('scrolled', scrollTop > 8);
+
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = pct + '%';
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 </script>
 
 </body>
