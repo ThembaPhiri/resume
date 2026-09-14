@@ -233,8 +233,18 @@
     pointer-events: none;
   }
 
+  .hero-network svg,
+  .hero-network canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
   @media (max-width: 900px) { .hero-network { display: none; } }
 
+  /* SVG fallback animation (used only if WebGL/Three.js is unavailable) */
   .network-rotate {
     transform-origin: 230px 230px;
     animation: networkRotate 40s linear infinite;
@@ -776,7 +786,8 @@
 
 <main>
   <section class="hero wrap">
-    <svg class="hero-network" viewBox="0 0 460 460" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <div class="hero-network" id="heroNetwork">
+    <svg id="heroNetworkSvg" viewBox="0 0 460 460" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <defs>
         <radialGradient id="nodeglow" cx="50%" cy="50%" r="50%">
           <stop offset="0%" stop-color="#d4af5a" stop-opacity="0.9"/>
@@ -809,6 +820,7 @@
         </g>
       </g>
     </svg>
+    </div>
 
     <div class="hero-content">
       <div class="hero-kicker"><span class="pulse"></span>OPEN TO NEW OPPORTUNITIES</div>
@@ -816,7 +828,6 @@
       <p>I'm Themba Phiri, an IT Service Desk professional based in Johannesburg with 3 years' experience as a first-line escalation point for a national user base — resolving 25+ tickets daily across Microsoft 365, Active Directory, and networked infrastructure while hitting SLA targets in high-pressure, multi-site environments.</p>
       <div class="hero-actions">
         <a href="#experience" class="btn btn-primary">See my experience</a>
-        <a href="mailto:p.themba3468@gmail.com" class="btn btn-secondary">Get in touch</a>
       </div>
 
       <div class="hero-stats">
@@ -985,6 +996,7 @@
         <a href="mailto:p.themba3468@gmail.com" class="btn btn-primary">Email me</a>
         <a href="tel:+27780661826" class="btn btn-secondary">Call</a>
         <a href="https://linkedin.com/in/themba-phiri-aa64081a4" target="_blank" rel="noopener" class="btn btn-secondary">LinkedIn</a>
+        <a href="assets/Themba_Phiri_CV.pdf" class="btn btn-secondary" download>Download CV</a>
       </div>
     </div>
   </section>
@@ -1021,6 +1033,161 @@
 
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function () {
+  var container = document.getElementById('heroNetwork');
+  var fallbackSvg = document.getElementById('heroNetworkSvg');
+  if (!container || !fallbackSvg) return;
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function canUseWebGL() {
+    try {
+      var c = document.createElement('canvas');
+      return !!(window.WebGLRenderingContext &&
+        (c.getContext('webgl') || c.getContext('experimental-webgl')));
+    } catch (e) { return false; }
+  }
+
+  // If Three.js failed to load or WebGL isn't available, keep the SVG fallback as-is.
+  if (typeof THREE === 'undefined' || !canUseWebGL()) return;
+
+  var GOLD = 0xd4af5a;
+  var TEAL = 0x5fcbb8;
+  var WHITE = 0xf2f0ea;
+
+  // Node layout: derived from the original 2D constellation, given depth (z) for real 3D parallax.
+  var goldNodes = [
+    { pos: [-1.50, -1.40,  0.60], delay: 0 },
+    { pos: [ 1.50, -1.60, -0.80], delay: 0.6 },
+    { pos: [-1.70,  0.30, -0.60], delay: 1.2 },
+    { pos: [ 1.70,  0.10,  0.90], delay: 1.8 },
+    { pos: [-0.80,  1.70, -0.40], delay: 0.3 },
+    { pos: [ 1.00,  1.60,  0.70], delay: 0.9 }
+  ];
+  var tealNodes = [
+    { pos: [-0.80, -0.50, -1.00], delay: 1.5, linkTo: 0 },
+    { pos: [ 1.20,  0.40,  1.10], delay: 2.1, linkTo: 3 }
+  ];
+
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+  camera.position.set(0, 0, 6.2);
+
+  var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+  function sizeRenderer() {
+    var w = container.clientWidth || 460;
+    var h = container.clientHeight || 460;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+
+  var group = new THREE.Group();
+  scene.add(group);
+
+  // Center glow sprite (soft radial gradient, matches the gold accent)
+  function makeGlowTexture() {
+    var size = 128;
+    var cnv = document.createElement('canvas');
+    cnv.width = cnv.height = size;
+    var ctx = cnv.getContext('2d');
+    var grad = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+    grad.addColorStop(0, 'rgba(212,175,90,0.95)');
+    grad.addColorStop(1, 'rgba(212,175,90,0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, size, size);
+    return new THREE.CanvasTexture(cnv);
+  }
+
+  var glowSprite = new THREE.Sprite(new THREE.SpriteMaterial({
+    map: makeGlowTexture(), transparent: true, depthWrite: false
+  }));
+  glowSprite.scale.set(1.9, 1.9, 1);
+  group.add(glowSprite);
+
+  var centerSphere = new THREE.Mesh(
+    new THREE.SphereGeometry(0.09, 16, 16),
+    new THREE.MeshBasicMaterial({ color: GOLD })
+  );
+  group.add(centerSphere);
+
+  function addNode(pos, color) {
+    var mesh = new THREE.Mesh(
+      new THREE.SphereGeometry(0.075, 12, 12),
+      new THREE.MeshBasicMaterial({ color: color, transparent: true, opacity: 0.8 })
+    );
+    mesh.position.set(pos[0], pos[1], pos[2]);
+    group.add(mesh);
+    return mesh;
+  }
+
+  function addLine(a, b, color, opacity) {
+    var geo = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(a[0], a[1], a[2]),
+      new THREE.Vector3(b[0], b[1], b[2])
+    ]);
+    var mat = new THREE.LineBasicMaterial({ color: color, transparent: true, opacity: opacity });
+    group.add(new THREE.Line(geo, mat));
+  }
+
+  var origin = [0, 0, 0];
+  var nodeMeshes = [];
+
+  goldNodes.forEach(function (n) {
+    addLine(origin, n.pos, GOLD, 0.35);
+    var mesh = addNode(n.pos, WHITE);
+    nodeMeshes.push({ mesh: mesh, delay: n.delay });
+  });
+
+  tealNodes.forEach(function (n) {
+    addLine(origin, n.pos, GOLD, 0.35);
+    addLine(goldNodes[n.linkTo].pos, n.pos, TEAL, 0.3);
+    var mesh = addNode(n.pos, TEAL);
+    nodeMeshes.push({ mesh: mesh, delay: n.delay });
+  });
+
+  container.innerHTML = '';
+  container.appendChild(renderer.domElement);
+  sizeRenderer();
+
+  window.addEventListener('resize', sizeRenderer);
+
+  var clock = new THREE.Clock();
+
+  function renderFrame() {
+    var t = clock.getElapsedTime();
+
+    group.rotation.y = t * 0.157; // ~40s per full rotation
+    group.rotation.x = Math.sin(t * 0.3) * 0.18;
+
+    var glowPulse = 0.7 + 0.3 * (0.5 + 0.5 * Math.sin((t / 3.6) * Math.PI * 2));
+    glowSprite.material.opacity = glowPulse;
+    glowSprite.scale.set(1.9 * (0.9 + 0.2 * glowPulse), 1.9 * (0.9 + 0.2 * glowPulse), 1);
+
+    nodeMeshes.forEach(function (n) {
+      var phase = ((t - n.delay) / 3) * Math.PI * 2;
+      var wave = 0.5 + 0.5 * Math.sin(phase);
+      var opacity = 0.45 + wave * 0.55;
+      var scale = 0.85 + wave * 0.45;
+      n.mesh.material.opacity = opacity;
+      n.mesh.scale.set(scale, scale, scale);
+    });
+  }
+
+  function animate() {
+    renderFrame();
+    renderer.render(scene, camera);
+    if (!reduceMotion) requestAnimationFrame(animate);
+  }
+
+  animate();
+})();
 </script>
 
 </body>
