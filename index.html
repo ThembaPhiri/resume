@@ -218,7 +218,10 @@
 
   /* HERO */
   .hero {
-    padding: 130px 0 100px;
+    /* padding-top/bottom only (not the shorthand) so this doesn't clobber
+       the left/right padding already set by .wrap on the same element */
+    padding-top: 130px;
+    padding-bottom: 100px;
     position: relative;
   }
 
@@ -754,7 +757,7 @@
     .timeline-item { grid-template-columns: 1fr; gap: 10px; }
     .navlinks { gap: 18px; font-size: 13px; }
     .navlinks a.cta { display: none; }
-    .hero { padding: 84px 0 60px; }
+    .hero { padding-top: 84px; padding-bottom: 60px; }
     .hero-stats { flex-wrap: wrap; gap: 28px; }
     .contact-panel { padding: 40px 24px; }
   }
