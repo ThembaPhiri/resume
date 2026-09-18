@@ -656,8 +656,30 @@
   .cert-desc {
     color: var(--muted);
     font-size: 13.5px;
-    margin: 0;
+    margin: 0 0 16px;
     line-height: 1.6;
+  }
+
+  .cert-verify {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--teal);
+    text-decoration: none;
+    border: 1px solid rgba(95,203,184,0.3);
+    padding: 6px 12px;
+    border-radius: 100px;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+  }
+
+  .cert-verify svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+  .cert-verify:hover {
+    border-color: var(--teal);
+    background: rgba(95,203,184,0.08);
+    color: var(--ink);
   }
 
   /* SKILLS */
@@ -939,16 +961,28 @@
         <span class="cert-tag">MICROSOFT</span>
         <p class="cert-name">Azure Fundamentals (AZ-900)</p>
         <p class="cert-desc">Foundational certification covering core cloud concepts, Azure services, security, and pricing.</p>
+        <a href="https://learn.microsoft.com/en-us/users/thembaphiri-5879/credentials/80038c563c33a36f" target="_blank" rel="noopener" class="cert-verify">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Verify credential
+        </a>
       </div>
       <div class="cert-card">
         <span class="cert-tag">FORTINET</span>
         <p class="cert-name">Cybersecurity Fundamentals (FCF)</p>
         <p class="cert-desc">Entry-level certification covering foundational cybersecurity concepts, threats, and Fortinet solutions.</p>
+        <a href="https://www.credly.com/badges/41168028-c726-47a9-b903-aecc96365135" target="_blank" rel="noopener" class="cert-verify">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Verify credential
+        </a>
       </div>
       <div class="cert-card">
         <span class="cert-tag">FORTINET</span>
         <p class="cert-name">Cybersecurity Associate (FCA)</p>
         <p class="cert-desc">Associate-level certification covering core cybersecurity concepts and Fortinet's Security Fabric.</p>
+        <a href="https://www.credly.com/badges/9bbe4cf6-3130-4f86-8b2d-bda731aa4198" target="_blank" rel="noopener" class="cert-verify">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Verify credential
+        </a>
       </div>
       <div class="cert-card">
         <span class="cert-tag">IN PROGRESS</span>
