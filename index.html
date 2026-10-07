@@ -788,6 +788,46 @@
     outline: 2px solid var(--gold);
     outline-offset: 2px;
   }
+
+  /* PROJECTS */
+  .project-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 38px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: -30%; right: -10%;
+    width: 380px; height: 260px;
+    background: radial-gradient(ellipse, rgba(212,175,90,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .project-card > * { position: relative; }
+  .project-card:hover { border-color: var(--border-strong); background: var(--glass-hover); }
+  .project-card + .project-card { margin-top: 22px; }
+  .project-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .project-tags .cert-tag { margin-bottom: 0; }
+  .project-title { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 600; margin: 0 0 14px; letter-spacing: -0.01em; }
+  .project-lead { color: var(--muted); font-size: 16px; margin: 0 0 30px; max-width: 700px; }
+  .project-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 30px; }
+  .project-cols h3 { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; color: var(--gold); margin: 0 0 14px; letter-spacing: 0.04em; }
+  .project-cols ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14.5px; }
+  .project-cols li { margin-bottom: 9px; }
+  .project-cols li::marker { color: var(--gold); }
+  .flow { list-style: none; margin: 0; padding: 0; counter-reset: f; }
+  .flow li { counter-increment: f; display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: start; margin-bottom: 14px; font-size: 14.5px; color: var(--muted); }
+  .flow li::before { content: counter(f); display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--border-strong); color: var(--gold); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .flow b { color: var(--ink); font-weight: 600; }
+  .status { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--teal); background: rgba(95,203,184,0.1); border-radius: 5px; padding: 2px 7px; margin-left: 6px; white-space: nowrap; }
+  .project-foot { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; padding-top: 26px; border-top: 1px solid var(--border); }
+  .project-foot .stack-list { gap: 8px; }
+  @media (max-width: 760px) { .project-card { padding: 28px 22px; } .project-cols { grid-template-columns: 1fr; gap: 28px; } }
 </style>
 </head>
 <body>
@@ -802,6 +842,7 @@
       <a href="#" class="logo">Themba<span class="dot">.</span>Phiri</a>
       <div class="navlinks">
         <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
         <a href="#skills">Skills</a>
         <a href="#contact" class="cta">Contact</a>
       </div>
@@ -964,6 +1005,110 @@
         </div>
       </div>
     </div>
+  </section>
+
+  <section id="projects" class="wrap reveal">
+    <div class="section-head">
+      <div>
+        <span class="section-eyebrow">PORTFOLIO</span>
+        <h2 class="display">Projects</h2>
+      </div>
+      <span class="count mono">2 projects</span>
+    </div>
+
+    <article class="project-card">
+      <div class="project-tags">
+        <span class="cert-tag">WEB APPLICATION</span>
+        <span class="cert-tag">GROUP PROJECT</span>
+        <span class="cert-tag">PBDE401 · PLATFORM BASED DEVELOPMENT</span>
+      </div>
+      <h3 class="project-title">CodeCrafters — DUT Student Ticketing Portal</h3>
+      <p class="project-lead">A web-based grievance ticketing system for Durban University of Technology students. Instead of complaints getting lost in emails and queues, a student submits an issue to the right department, receives a unique ticket number, and follows it through to resolution with a 72-hour response target. Built by Group 2 for my first-semester Platform Based Development (PBDE401) module.</p>
+
+      <div class="project-cols">
+        <div>
+          <h3>WHAT THE SYSTEM DOES</h3>
+          <ul>
+            <li>Students register with their DUT email and student number, then sign in to a secure account.</li>
+            <li>Tickets are submitted to one of 10 departments, with a description, a priority level and supporting documents attached.</li>
+            <li>Every ticket gets a unique reference number and a live status: Pending, Assigned, In Progress or Resolved.</li>
+            <li>Admins review incoming tickets and assign them to the right staff member.</li>
+            <li>Staff accept tickets, add progress updates and mark them resolved; students are notified and can rate the service.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>HOW A TICKET MOVES</h3>
+          <ol class="flow">
+            <li><span><b>Student submits</b> an issue and receives a reference number <span class="status">PENDING</span></span></li>
+            <li><span><b>Admin reviews</b> it and assigns it to a staff member <span class="status">ASSIGNED</span></span></li>
+            <li><span><b>Staff work on it</b> and post updates the student can follow <span class="status">IN PROGRESS</span></span></li>
+            <li><span><b>Staff resolve it</b>; the student is notified and rates the service <span class="status">RESOLVED</span></span></li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="project-foot">
+        <ul class="stack-list">
+          <li>Python</li>
+          <li>Flask</li>
+          <li>SQLite</li>
+          <li>Bootstrap 5</li>
+          <li>PythonAnywhere</li>
+        </ul>
+        <a href="https://thembaphiri.pythonanywhere.com/" target="_blank" rel="noopener" class="btn btn-primary">Visit live site</a>
+      </div>
+    </article>
+
+    <article class="project-card">
+      <div class="project-tags">
+        <span class="cert-tag">WEB APPLICATION</span>
+        <span class="cert-tag">COMMUNITY PROJECT</span>
+      </div>
+      <h3 class="project-title">IT Graduates Mentorship Platform</h3>
+      <p class="project-lead">A peer-mentorship web platform that connects working IT graduates (mentors) with graduates still looking for their first opportunity (mentees). Members sign up online, a coordinator pairs them by specialisation, and each pair gets the other's contact details to start talking on WhatsApp. It is a free, serverless site: the front end runs on GitHub Pages, and Firebase handles sign-in and data.</p>
+
+      <div class="project-cols">
+        <div>
+          <h3>WHAT THE SYSTEM DOES</h3>
+          <ul>
+            <li>A sign-up form for mentors and mentees capturing name, WhatsApp number, specialisation, goals or skills to share, and availability, with a consent tick-box for sharing contact details.</li>
+            <li>Mentors set how many mentees they can take (1 to 5), so no mentor is overloaded.</li>
+            <li>A coordinator dashboard shows live totals (mentors, mentees, matched, waiting) and lets the coordinator match or unmatch each mentee.</li>
+            <li>Mentor suggestions are filtered by free capacity and starred when the specialisation matches the mentee's field.</li>
+            <li>Matched members see their partner's details and a one-tap WhatsApp chat button, updated in real time.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>HOW A MATCH HAPPENS</h3>
+          <ol class="flow">
+            <li><span><b>Join</b> as a mentor or mentee and complete a profile</span></li>
+            <li><span><b>Coordinator reviews</b> everyone waiting to be matched</span></li>
+            <li><span><b>Match</b> by specialisation and mentor capacity</span></li>
+            <li><span><b>Connect</b> on WhatsApp and begin the skills transfer</span></li>
+          </ol>
+          <h3 style="margin-top:26px">SECURITY &amp; ACCESS</h3>
+          <ul>
+            <li>Members sign in anonymously; the coordinator signs in with Google.</li>
+            <li>Firestore security rules let members read only their own data, and only the coordinator can create matches.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="project-foot">
+        <ul class="stack-list">
+          <li>HTML</li>
+          <li>CSS</li>
+          <li>JavaScript</li>
+          <li>Firebase Auth</li>
+          <li>Cloud Firestore</li>
+          <li>GitHub Pages</li>
+        </ul>
+        <div class="project-actions">
+          <a href="https://thembaphiri.github.io/mentorship-web/" target="_blank" rel="noopener" class="btn btn-primary">Visit live site</a>
+          <a href="https://github.com/ThembaPhiri/mentorship-web" target="_blank" rel="noopener" class="btn btn-secondary">View on GitHub</a>
+        </div>
+      </div>
+    </article>
   </section>
 
   <section id="certs" class="wrap reveal">
