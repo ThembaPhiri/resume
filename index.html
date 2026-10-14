@@ -74,11 +74,16 @@
     --border: rgba(255,255,255,0.09);
     --border-strong: rgba(212,175,90,0.5);
     --ink: #f2f0ea;
-    --muted: #979aa3;
+    --muted: #a4a8b1;
     --gold: #d4af5a;
     --gold-dim: rgba(212,175,90,0.14);
-    --teal: #5fcbb8;
+    --teal: #6dd4c2;
     --radius: 16px;
+
+    /* rhythmic section spacing */
+    --pad-lg: 120px;
+    --pad-md: 80px;
+    --pad-sm: 56px;
   }
 
   * { box-sizing: border-box; }
@@ -144,17 +149,6 @@
     border-bottom-color: rgba(212,175,90,0.25);
   }
 
-  .scroll-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 2px;
-    width: 0%;
-    background: linear-gradient(90deg, var(--gold), var(--teal));
-    z-index: 40;
-    transition: width 0.1s ease-out;
-  }
-
   nav {
     display: flex;
     justify-content: space-between;
@@ -218,22 +212,23 @@
 
   /* HERO */
   .hero {
-    /* padding-top/bottom only (not the shorthand) so this doesn't clobber
-       the left/right padding already set by .wrap on the same element */
-    padding-top: 130px;
-    padding-bottom: 100px;
+    padding-top: 120px;
+    padding-bottom: 96px;
     position: relative;
   }
 
+  /* WebGL host — positioned to the right, sits BEHIND the content column */
   .hero-network {
     position: absolute;
-    top: -20px;
-    right: -60px;
-    width: 460px;
-    height: 460px;
-    opacity: 0.9;
+    top: 20px;
+    right: -80px;
+    width: 520px;
+    height: 520px;
+    opacity: 0.75;
     z-index: 0;
     pointer-events: none;
+    mask-image: radial-gradient(circle at 50% 50%, #000 55%, transparent 78%);
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 55%, transparent 78%);
   }
 
   .hero-network svg,
@@ -245,7 +240,9 @@
     display: block;
   }
 
-  @media (max-width: 900px) { .hero-network { display: none; } }
+  /* Hide the network behind the copy area on smaller screens */
+  @media (max-width: 1080px) { .hero-network { right: -140px; opacity: 0.5; } }
+  @media (max-width: 820px)  { .hero-network { display: none; } }
 
   /* SVG fallback animation (used only if WebGL/Three.js is unavailable) */
   .network-rotate {
@@ -285,7 +282,7 @@
     .node-twinkle { animation: none; }
   }
 
-  .hero-content { position: relative; z-index: 1; max-width: 640px; }
+  .hero-content { position: relative; z-index: 1; max-width: 620px; }
 
   .hero-kicker {
     display: inline-flex;
@@ -319,10 +316,10 @@
   .hero h1 {
     font-family: 'Fraunces', serif;
     font-weight: 600;
-    font-size: clamp(38px, 5.6vw, 60px);
+    font-size: clamp(38px, 5.4vw, 56px);
     line-height: 1.08;
     letter-spacing: -0.01em;
-    margin: 0 0 26px;
+    margin: 0 0 22px;
   }
 
   .hero h1 em {
@@ -331,10 +328,20 @@
     font-weight: 500;
   }
 
-  .hero p {
-    font-size: 18px;
+  /* Scannable sub-copy: short, stat-led */
+  .hero-sub {
+    font-size: 19px;
+    color: var(--ink);
+    margin: 0 0 12px;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .hero-sub-detail {
+    font-size: 16px;
     color: var(--muted);
-    margin: 0 0 38px;
+    margin: 0 0 36px;
+    max-width: 56ch;
   }
 
   .hero-actions {
@@ -374,8 +381,8 @@
   .hero-stats {
     display: flex;
     gap: 44px;
-    margin-top: 56px;
-    padding-top: 36px;
+    margin-top: 52px;
+    padding-top: 34px;
     border-top: 1px solid var(--border);
   }
 
@@ -385,6 +392,14 @@
     font-weight: 600;
     color: var(--gold);
     display: block;
+  }
+
+  .stat-num sup {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 400;
+    margin-left: 2px;
+    vertical-align: super;
   }
 
   .stat-label {
@@ -398,27 +413,30 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .hero-kicker, .hero h1, .hero p, .hero-actions, .hero-stats, .hero-network {
+  .hero-kicker, .hero h1, .hero-sub, .hero-sub-detail, .hero-actions, .hero-stats, .hero-network {
     opacity: 0;
     animation: heroRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
   .hero-kicker { animation-delay: 0.05s; }
   .hero h1 { animation-delay: 0.18s; }
-  .hero p { animation-delay: 0.32s; }
+  .hero-sub { animation-delay: 0.28s; }
+  .hero-sub-detail { animation-delay: 0.36s; }
   .hero-actions { animation-delay: 0.46s; }
   .hero-stats { animation-delay: 0.6s; }
   .hero-network { animation-delay: 0.3s; animation-duration: 1.2s; }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-kicker, .hero h1, .hero p, .hero-actions, .hero-stats, .hero-network {
+    .hero-kicker, .hero h1, .hero-sub, .hero-sub-detail, .hero-actions, .hero-stats, .hero-network {
       opacity: 1;
       animation: none;
     }
   }
 
-  /* SECTIONS */
-  section { padding: 96px 0; }
+  /* SECTIONS — rhythmic spacing */
+  section { padding: var(--pad-md) 0; }
+  section.pad-lg { padding: var(--pad-lg) 0; }
+  section.pad-sm { padding: var(--pad-sm) 0; }
 
   .reveal {
     opacity: 0;
@@ -431,7 +449,7 @@
     transform: translateY(0);
   }
 
-  .timeline-item, .cert-card, .skill-group {
+  .timeline-item, .cert-card, .skill-group, .do-card {
     opacity: 0;
     transform: translateY(14px);
     transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
@@ -439,7 +457,8 @@
 
   .reveal.in-view .timeline-item,
   .reveal.in-view .cert-card,
-  .reveal.in-view .skill-group {
+  .reveal.in-view .skill-group,
+  .reveal.in-view .do-card {
     opacity: 1;
     transform: translateY(0);
   }
@@ -460,8 +479,12 @@
   .reveal.in-view .skill-group:nth-child(3) { transition-delay: 0.19s; }
   .reveal.in-view .skill-group:nth-child(4) { transition-delay: 0.27s; }
 
+  .reveal.in-view .do-card:nth-child(1) { transition-delay: 0.04s; }
+  .reveal.in-view .do-card:nth-child(2) { transition-delay: 0.14s; }
+  .reveal.in-view .do-card:nth-child(3) { transition-delay: 0.24s; }
+
   @media (prefers-reduced-motion: reduce) {
-    .reveal, .timeline-item, .cert-card, .skill-group {
+    .reveal, .timeline-item, .cert-card, .skill-group, .do-card {
       opacity: 1; transform: none; transition: none;
     }
   }
@@ -496,6 +519,51 @@
     color: var(--muted);
   }
 
+  /* WHAT I DO */
+  .do-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .do-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 26px;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .do-card:hover { border-color: var(--border-strong); background: var(--glass-hover); }
+
+  .do-card .do-icon {
+    width: 34px;
+    height: 34px;
+    color: var(--gold);
+    margin-bottom: 18px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .do-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 10px;
+  }
+
+  .do-card p {
+    color: var(--muted);
+    font-size: 14.5px;
+    margin: 0;
+    line-height: 1.65;
+  }
+
+  @media (max-width: 760px) { .do-grid { grid-template-columns: 1fr; } }
+
   /* ABOUT */
   .about-grid {
     display: grid;
@@ -510,6 +578,23 @@
   }
 
   .about-text p:last-child { margin-bottom: 0; }
+
+  /* Callout for the strongest line */
+  .callout {
+    border-left: 3px solid var(--gold);
+    padding: 4px 0 4px 22px;
+    margin: 26px 0 26px;
+  }
+
+  .callout p {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    line-height: 1.45;
+    color: var(--ink);
+    margin: 0;
+    font-weight: 500;
+    font-style: italic;
+  }
 
   .stack-list {
     list-style: none;
@@ -682,6 +767,33 @@
     color: var(--ink);
   }
 
+  /* "Currently pursuing" strip */
+  .pursuing {
+    margin-top: 24px;
+    padding: 18px 24px;
+    background: var(--gold-dim);
+    border: 1px solid rgba(212,175,90,0.28);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .pursuing .pursuing-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+
+  .pursuing p {
+    margin: 0;
+    font-size: 14.5px;
+    color: var(--ink);
+  }
+
   /* SKILLS */
   .skills-grid {
     display: grid;
@@ -763,17 +875,65 @@
     flex-wrap: wrap;
   }
 
+  /* FOOTER — beefed up */
   footer {
-    padding: 44px 0 60px;
+    padding: 56px 0 60px;
     color: var(--muted);
     font-size: 13px;
-    font-family: 'JetBrains Mono', monospace;
-    text-align: center;
     border-top: 1px solid var(--border);
     margin-top: 20px;
   }
 
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+
+  .footer-grid h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 15px;
+    color: var(--ink);
+    margin: 0 0 16px;
+    font-weight: 600;
+  }
+
+  .footer-grid p { margin: 0; font-size: 14px; line-height: 1.65; }
+
+  .footer-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+    font-size: 14px;
+  }
+
+  .footer-links a {
+    text-decoration: none;
+    transition: color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .footer-links a:hover { color: var(--gold); }
+
+  .footer-base {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+
   @media (max-width: 640px) {
+    .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+
     .about-grid { grid-template-columns: 1fr; }
     .cert-grid { grid-template-columns: 1fr; }
     .timeline-item { grid-template-columns: 1fr; gap: 10px; }
@@ -782,6 +942,8 @@
     .hero { padding-top: 84px; padding-bottom: 60px; }
     .hero-stats { flex-wrap: wrap; gap: 28px; }
     .contact-panel { padding: 40px 24px; }
+    section { padding: var(--pad-sm) 0; }
+    section.pad-lg { padding: var(--pad-md) 0; }
   }
 
   a:focus-visible, button:focus-visible {
@@ -834,7 +996,6 @@
 
 <div class="ambient"></div>
 <div class="grain"></div>
-<div class="scroll-progress" id="scrollProgress"></div>
 
 <header>
   <div class="wrap">
@@ -891,9 +1052,13 @@
     <div class="hero-content">
       <div class="hero-kicker"><span class="pulse"></span>OPEN TO NEW OPPORTUNITIES</div>
       <h1 class="display">IT support that keeps <em>a national network</em> running.</h1>
-      <p>I'm Themba Phiri, an IT Service Desk professional based in Johannesburg with 3 years' experience as a first-line escalation point for a national user base — resolving 25+ tickets daily across Microsoft 365, Active Directory, and networked infrastructure while hitting SLA targets in high-pressure, multi-site environments.</p>
+
+      <p class="hero-sub">3 years on a 24/7 national service desk. 25+ tickets a day. Top 3 of 14 on the monthly board.</p>
+      <p class="hero-sub-detail">First-line escalation point for Lancet Laboratories' South African user base — Microsoft 365, Active Directory, DNS/DHCP/VPN, and everything in between.</p>
+
       <div class="hero-actions">
         <a href="#experience" class="btn btn-primary">See my experience</a>
+        <!-- <a href="assets/Themba_Phiri_CV.pdf" class="btn btn-secondary" download>Download CV</a> -->
       </div>
 
       <div class="hero-stats">
@@ -906,14 +1071,41 @@
           <span class="stat-label">Tickets resolved daily</span>
         </div>
         <div>
-          <span class="stat-num">Top 3</span>
+          <span class="stat-num">Top 3<sup>of 14</sup></span>
           <span class="stat-label">Monthly performer</span>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="about" class="wrap reveal">
+  <!-- WHAT I DO -->
+  <section id="what" class="wrap reveal pad-lg">
+    <div class="section-head">
+      <div>
+        <span class="section-eyebrow">WHAT I DO</span>
+        <h2 class="display">Three things I own every shift</h2>
+      </div>
+    </div>
+    <div class="do-grid">
+      <div class="do-card">
+        <svg class="do-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+        <h3>Escalate & resolve</h3>
+        <p>Sole first-line escalation point nationally during shift hours. I take the tickets Level 1 can't close and see them through — 70% of my daily volume is escalations.</p>
+      </div>
+      <div class="do-card">
+        <svg class="do-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>
+        <h3>Keep systems online</h3>
+        <p>Daily Active Directory changes, Microsoft 365 administration, and network triage across DNS, DHCP, VPN and multi-site connectivity — so clinicians and staff never lose access.</p>
+      </div>
+      <div class="do-card">
+        <svg class="do-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M2.5 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5M14.5 14.3c2.8-.6 6 .8 7 4"/></svg>
+        <h3>Bridge the teams</h3>
+        <p>Coordination point between Development, Consultants, Data, On-site Technical and external providers — keeping each incident moving without dropping the ball.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="wrap reveal pad-sm">
     <div class="section-head">
       <div>
         <span class="section-eyebrow">PROFILE</span>
@@ -922,8 +1114,11 @@
     </div>
     <div class="about-grid">
       <div class="about-text">
-        <p>I've spent the last three years as the sole first-line escalation point during shift hours for Lancet Laboratories' national user base, owning escalated tickets end-to-end across Microsoft 365, Azure Fundamentals, and networked infrastructure (DNS, DHCP, VPNs, 3CX). Day to day, I liaise across Development, Consultants, Data, On-site Technical, and external service provider teams to keep internal systems running at their optimal best and reduce downtime.</p>
-        <p>I hold Microsoft Azure Fundamentals (AZ-900) and dual Fortinet Cybersecurity certifications, with MD-102: Microsoft 365 Endpoint Administrator in progress. I'm currently based in Johannesburg and open to relocating for the right role.</p>
+        <div class="callout">
+          <p>During shift hours, I'm the national first-line escalation point for the entire South African user base.</p>
+        </div>
+        <p>Day to day, I own escalated tickets end-to-end across Microsoft 365, Azure Fundamentals, and networked infrastructure (DNS, DHCP, VPNs, 3CX). I liaise across Development, Consultants, Data, On-site Technical, and external service provider teams to keep internal systems at their optimal best and reduce downtime.</p>
+        <p>I hold Microsoft Azure Fundamentals (AZ-900) and dual Fortinet Cybersecurity certifications, with MD-102: Microsoft 365 Endpoint Administrator in progress. Currently based in Johannesburg and open to relocating for the right role.</p>
       </div>
       <ul class="stack-list">
         <li>Microsoft 365</li>
@@ -938,7 +1133,7 @@
     </div>
   </section>
 
-  <section id="experience" class="wrap reveal">
+  <section id="experience" class="wrap reveal pad-lg">
     <div class="section-head">
       <div>
         <span class="section-eyebrow">CAREER</span>
@@ -958,7 +1153,7 @@
             <li>Liaise across Development, Consultants, Data, On-site Technical, and relevant service provider teams to keep all Lancet internal systems running at optimal performance and reduce downtime.</li>
             <li>Resolve 25+ tickets daily, with 70% being escalations from Level 1 technicians.</li>
             <li>Manage 5+ Active Directory changes daily, including user accounts, access rights, and permissions.</li>
-            <li>Consistently ranked in the top 3 performers on monthly service desk statistics for ticket throughput and resolution quality.</li>
+            <li>Consistently ranked in the top 3 of 14 performers on monthly service desk statistics for ticket throughput and resolution quality.</li>
           </ul>
         </div>
       </div>
@@ -1007,7 +1202,7 @@
     </div>
   </section>
 
-  <section id="projects" class="wrap reveal">
+  <section id="projects" class="wrap reveal pad-lg">
     <div class="section-head">
       <div>
         <span class="section-eyebrow">PORTFOLIO</span>
@@ -1111,7 +1306,7 @@
     </article>
   </section>
 
-  <section id="certs" class="wrap reveal">
+  <section id="certs" class="wrap reveal pad-lg">
     <div class="section-head">
       <div>
         <span class="section-eyebrow">CREDENTIALS</span>
@@ -1147,19 +1342,24 @@
         </a>
       </div>
       <div class="cert-card">
-        <span class="cert-tag">IN PROGRESS</span>
-        <p class="cert-name">MD-102: M365 Endpoint Administrator</p>
-        <p class="cert-desc">Microsoft certification in progress, covering endpoint management and deployment.</p>
-      </div>
-      <div class="cert-card">
         <span class="cert-tag">2020–2022</span>
         <p class="cert-name">Diploma in ICT — Durban University of Technology</p>
-        <p class="cert-desc">Average 73%. Information Systems, Applications Development, Project Management, Cisco Networking & Cybersecurity Fundamentals, Mobile Computing.</p>
+        <p class="cert-desc">Average 73%. Information Systems, Applications Development, Project Management, Cisco Networking &amp; Cybersecurity Fundamentals, Mobile Computing.</p>
       </div>
+      <div class="cert-card">
+        <span class="cert-tag">EDUCATION</span>
+        <p class="cert-name">Matric / National Senior Certificate</p>
+        <p class="cert-desc">Completed secondary education in South Africa. Full certificate available on request.</p>
+      </div>
+    </div>
+
+    <div class="pursuing">
+      <span class="pursuing-label">IN PROGRESS</span>
+      <p><strong>MD-102: Microsoft 365 Endpoint Administrator</strong> — endpoint management and deployment.</p>
     </div>
   </section>
 
-  <section id="skills" class="wrap reveal">
+  <section id="skills" class="wrap reveal pad-lg">
     <div class="section-head">
       <div>
         <span class="section-eyebrow">CAPABILITIES</span>
@@ -1186,7 +1386,7 @@
     </div>
   </section>
 
-  <section id="contact" class="wrap reveal">
+  <section id="contact" class="wrap reveal pad-lg">
     <div class="contact-panel">
       <span class="section-eyebrow">GET IN TOUCH</span>
       <h2 class="display">Let's talk.</h2>
@@ -1194,14 +1394,42 @@
       <div class="contact-links">
         <a href="mailto:p.themba3468@gmail.com" class="btn btn-primary">Email me</a>
         <a href="tel:+27780661826" class="btn btn-secondary">Call</a>
-        <a href="https://linkedin.com/in/themba-phiri-aa64081a4" target="_blank" rel="noopener" class="btn btn-secondary">LinkedIn</a>
-       <!--  <a href="assets/Themba_Phiri_CV.pdf" class="btn btn-secondary" download>Download CV</a> -->
+        <a href="https://linkedin.com/in/themba-phiri-aa64081a4" target="_blank" rel="noopener me" class="btn btn-secondary">LinkedIn</a>
+        <!-- <a href="assets/Themba_Phiri_CV.pdf" class="btn btn-secondary" download>Download CV</a> -->
       </div>
     </div>
   </section>
 </main>
 
-<footer class="wrap">Johannesburg, Gauteng · References available on request</footer>
+<footer class="wrap">
+  <div class="footer-grid">
+    <div>
+      <h4>Themba Phiri</h4>
+      <p>IT Service Desk professional based in Johannesburg, supporting a national user base across Microsoft 365, Active Directory, networking, and cybersecurity.</p>
+    </div>
+    <div>
+      <h4>Get in touch</h4>
+      <ul class="footer-links">
+        <li><a href="mailto:p.themba3468@gmail.com">p.themba3468@gmail.com</a></li>
+        <li><a href="tel:+27780661826">+27 78 066 1826</a></li>
+        <li><a href="https://linkedin.com/in/themba-phiri-aa64081a4" target="_blank" rel="noopener me">LinkedIn</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Quick links</h4>
+      <ul class="footer-links">
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-base">
+    <span>Johannesburg, Gauteng · Open to relocation</span>
+    <span>References available on request</span>
+  </div>
+</footer>
 
 <script>
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -1219,15 +1447,9 @@
   }
 
   const header = document.querySelector('header');
-  const progressBar = document.getElementById('scrollProgress');
 
   function onScroll() {
-    const scrollTop = window.scrollY;
-    header.classList.toggle('scrolled', scrollTop > 8);
-
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    progressBar.style.width = pct + '%';
+    header.classList.toggle('scrolled', window.scrollY > 8);
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
@@ -1251,14 +1473,12 @@
     } catch (e) { return false; }
   }
 
-  // If Three.js failed to load or WebGL isn't available, keep the SVG fallback as-is.
   if (typeof THREE === 'undefined' || !canUseWebGL()) return;
 
   var GOLD = 0xd4af5a;
   var TEAL = 0x5fcbb8;
   var WHITE = 0xf2f0ea;
 
-  // Node layout: derived from the original 2D constellation, given depth (z) for real 3D parallax.
   var goldNodes = [
     { pos: [-1.50, -1.40,  0.60], delay: 0 },
     { pos: [ 1.50, -1.60, -0.80], delay: 0.6 },
@@ -1280,8 +1500,8 @@
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
   function sizeRenderer() {
-    var w = container.clientWidth || 460;
-    var h = container.clientHeight || 460;
+    var w = container.clientWidth || 520;
+    var h = container.clientHeight || 520;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
@@ -1290,7 +1510,6 @@
   var group = new THREE.Group();
   scene.add(group);
 
-  // Center glow sprite (soft radial gradient, matches the gold accent)
   function makeGlowTexture() {
     var size = 128;
     var cnv = document.createElement('canvas');
@@ -1362,7 +1581,7 @@
   function renderFrame() {
     var t = clock.getElapsedTime();
 
-    group.rotation.y = t * 0.157; // ~40s per full rotation
+    group.rotation.y = t * 0.157;
     group.rotation.x = Math.sin(t * 0.3) * 0.18;
 
     var glowPulse = 0.7 + 0.3 * (0.5 + 0.5 * Math.sin((t / 3.6) * Math.PI * 2));
